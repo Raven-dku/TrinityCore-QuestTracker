@@ -38,6 +38,9 @@ Features:
 - Sorting by any row, both descending and ascending order
 - Coded in OOP
 
+Screenshots:
+![Screenshot](https://raw.githubusercontent.com/Unwrath/TrinityCore-QuestTracker/master/images/light-example.JPG)
+![Screenshot](https://raw.githubusercontent.com/Unwrath/TrinityCore-QuestTracker/master/images/dark-example.JPG)
 Tested on:
 - 3.3.5, works as intended.
 - master, waiting to be tested. (In theory it should work if such table exists in master, just need to select ARMORY type to 2(Wowhead)).
