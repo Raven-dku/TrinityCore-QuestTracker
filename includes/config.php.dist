@@ -1,0 +1,42 @@
+<?php
+/**
+ * Configuration file for TrinityCore QuestTracker system.
+ * Author : Tomas Rad (Raven)
+ * Date : 14/09/2020
+ * Time : 2:49 PM GMT+1
+ *
+ * To maximize security, please create a separate user with only SELECT privilege to these tables - .characters, .quest_tracker in character's database, and .quest_template in world database!
+ *
+ * HOSTNAME      - Address  for connection to database. If QuestTracker is stored locally - For Winblows users, please put "localhost", for UNIX/MacOS - 127.0.0.1
+ * USERNAME      - Username for connection to database.
+ * PASSWORD      - Password for connection to database.
+ * PORT          - Port for for connection to database.By default, this should be 3306. If your's is different, please change it.
+ * CHAR_DB       - Database name for TrinityCore Character's database.
+ * WORLD_DB      - Database name for TrinityCore World's database.
+ * QT_TABLE      - Quest Tracker table name.
+ * ARMORY_URL    - Armory script to be defined. There are three options:
+ *                 1 - use EvoWoW tooltips. great for 3.3.5.
+ *                 2 - use Wowhead tooltips. great for master I guess? not so great for 3.3.5.
+ *                 3 - use WotlkDB tooltips. great for 3.3.5, has slightly more info.
+ * TOOLTIP_LIMIT - Limit for tooltips, how many records should be retrieved. Keep the number real, don't put insane amounts here. Huge numbers will decrease performance.
+ *
+ */
+
+define('HOSTNAME'       , '');
+define('USERNAME'       , '');
+define('PASSWORD'       , '');
+define('PORT'           , '');
+define('CHAR_DB'        , '');
+define('WORLD_DB'       , '');
+define('ARMORY'         , '1');
+define('TOOLTIP_LIMIT'  , '255');
+
+/**
+ * DO NOT EDIT BELOW
+ */
+if(ARMORY == 1)
+    define('ARMORY_URL', 'https://wotlk.evowow.com/?quest=');
+elseif(ARMORY == 2)
+    define('ARMORY_URL', 'https://wowhead.com/?quest=');
+elseif(ARMORY == 3)
+    define('ARMORY_URL', 'https://wotlkdb.com/?quest=');

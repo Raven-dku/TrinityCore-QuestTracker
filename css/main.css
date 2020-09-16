@@ -9,3 +9,10 @@ bodya {
 .content {
     z-index:2;
 }
+.dataTables_filter {
+    display: none;
+}
+.dataTables_length {
+    margin-top: 10px;
+    margin-left: 20px;
+}
