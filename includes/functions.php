@@ -151,7 +151,7 @@ class Functions {
     public function getLastAcceptedByQuestID($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT * FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."'  LIMIT {$limit}";
+        $query= "SELECT * FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' ORDER by `quest_accept_time` DESC  LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
@@ -176,7 +176,7 @@ class Functions {
     public function getLastAbandonedByQuestID($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT * FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."'  LIMIT {$limit}";
+        $query= "SELECT * FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' ORDER by `quest_abandon_time` DESC  LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
@@ -201,7 +201,7 @@ class Functions {
     public function getLastCompletedByQuestID($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT `character_guid`, `quest_complete_time`, `completed_by_gm` FROM {$this->char}.quest_tracker WHERE id = '".$QuestID."'  LIMIT {$limit}";
+        $query= "SELECT `character_guid`, `quest_complete_time`, `completed_by_gm` FROM {$this->char}.quest_tracker WHERE id = '".$QuestID."' ORDER by `quest_complete_time` DESC  LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
@@ -228,7 +228,7 @@ class Functions {
     public function getLastAcceptedByDate($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT `character_guid`, `quest_accept_time` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' LIMIT {$limit}";
+        $query= "SELECT `character_guid`, `quest_accept_time` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' ORDER by `quest_accept_time` DESC LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
@@ -251,7 +251,7 @@ class Functions {
     public function getLastAbandonedByDate($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT `character_guid`, `quest_accept_time`, `quest_abandon_time` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' LIMIT {$limit}";
+        $query= "SELECT `character_guid`, `quest_accept_time`, `quest_abandon_time` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' ORDER by `quest_abandon_time` DESC LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
@@ -276,7 +276,7 @@ class Functions {
     public function getLastCompletedByDate($QuestID)
     {
         $limit = $this->limit;
-        $query= "SELECT `character_guid`, `quest_accept_time`, `quest_complete_time`, `completed_by_gm` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' LIMIT {$limit}";
+        $query= "SELECT `character_guid`, `quest_accept_time`, `quest_complete_time`, `completed_by_gm` FROM `{$this->char}`.`quest_tracker` WHERE `id` = '".$QuestID."' ORDER by `quest_complete_time` DESC LIMIT {$limit}";
         $result = $this->db->query($query);
         if($result !== false)
         {
