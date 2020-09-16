@@ -29,7 +29,7 @@ define('PORT'           , '');
 define('CHAR_DB'        , '');
 define('WORLD_DB'       , '');
 define('ARMORY'         , '1');
-define('TOOLTIP_LIMIT'  , '255');
+define('TOOLTIP_LIMIT'  , '30');
 
 /**
  * DO NOT EDIT BELOW
