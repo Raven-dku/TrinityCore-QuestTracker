@@ -302,6 +302,7 @@ class Functions {
      */
     public function getTableData()
     {
+
         $requestData = $_REQUEST;
         $tquery = "SELECT id FROM `".$this->char."`.`quest_tracker`";
         $tresult = $this->db->query($tquery);
@@ -316,32 +317,56 @@ class Functions {
         else
             $rquery .= " ON A.id = B.ID GROUP BY `id`";
         $rquery .= " ORDER BY ".$tableColumns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."   LIMIT ".$requestData['start'] . " ,".$requestData['length']."   ";
-        $result = $this->db->query($rquery);
-        $data = array();
+        //Cache time in seconds. 60 * 360 = six hours.
+        $cacheTimeSeconds = (60 * 360);
+        //Generate an MD5 hash from the SQL query above.
+        $sqlCacheName = md5($rquery) . ".cache";
+        //The name of our cache folder.
+        $cache = '../cache';
+        //Full path to cache file.
+        $cacheFile = $cache . "/" . $sqlCacheName;
+        if(file_exists($cacheFile) && (filemtime($cacheFile) > (time() - ($cacheTimeSeconds)))){
+            //Get the contents of our cached file.
+            $fileContents = file_get_contents($cacheFile);
+            //Decode the JSON back into an array.
+            $data = json_decode($fileContents);
+            $json_data = array(
+                "draw" => intval($requestData['draw']),   // for every request/draw by client side , they send a number as a parameter, when they receive a response/data they first check the draw number, so we are sending same number in draw.
+                "recordsTotal" => intval($totalData),  // total number of records
+                "recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
+                "data" => $data   // total data array
+            );
+            echo json_encode($json_data);  // send data as json format
+        } else {
+            $result = $this->db->query($rquery);
+            $data = array();
 
-        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $nestedData = array();
-            $nestedData[] = '<a href="'.$this->url.$row['id'].'">'.$row["id"].'</a>';
-            $nestedData[] = '<a href="'.$this->url.$row['id'].'">'.$row["QuestName"].'</a>';
-            $nestedData[] = $row["QuestTries"] . ' Tries</a>';
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastAcceptedByQuestID($row['id']).'">'.$row["QuestAcceptedTimes"] . ' Times';
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastAbandonedByQuestID($row['id']).'">'.$row["QuestAbandonedTimes"] . ' Times';
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastCompletedByQuestID($row['id']).'">'.$row["QuestCompletedTimes"] . ' Times';
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastAcceptedByDate($row['id']).'">'.$row["QuestLastAccepted"];
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastAbandonedByDate($row['id']).'">'.$row["QuestLastAbandoned"];
-            $nestedData[] = '<a href="#" data-tippy-content="'.$this->getLastCompletedByDate($row['id']).'">'.$row["QuestLastCompleted"];
-            $data[] = $nestedData;
-        }
-            if(!empty($requestData['search']['value']))
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                $nestedData = array();
+                $nestedData[] = '<a href="' . $this->url . $row['id'] . '">' . $row["id"] . '</a>';
+                $nestedData[] = '<a href="' . $this->url . $row['id'] . '">' . $row["QuestName"] . '</a>';
+                $nestedData[] = $row["QuestTries"] . ' Tries</a>';
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastAcceptedByQuestID($row['id']) . '">' . $row["QuestAcceptedTimes"] . ' Times';
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastAbandonedByQuestID($row['id']) . '">' . $row["QuestAbandonedTimes"] . ' Times';
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastCompletedByQuestID($row['id']) . '">' . $row["QuestCompletedTimes"] . ' Times';
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastAcceptedByDate($row['id']) . '">' . $row["QuestLastAccepted"];
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastAbandonedByDate($row['id']) . '">' . $row["QuestLastAbandoned"];
+                $nestedData[] = '<a href="#" data-tippy-content="' . $this->getLastCompletedByDate($row['id']) . '">' . $row["QuestLastCompleted"];
+                $data[] = $nestedData;
+            }
+            if (!empty($requestData['search']['value']))
                 $totalFiltered = $result->num_rows;
 
-        $json_data = array(
-            "draw" => intval($requestData['draw']),   // for every request/draw by client side , they send a number as a parameter, when they receive a response/data they first check the draw number, so we are sending same number in draw.
-            "recordsTotal" => intval($totalData),  // total number of records
-            "recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
-            "data" => $data   // total data array
-        );
-        echo json_encode($json_data);  // send data as json format
+            $json_data = array(
+                "draw" => intval($requestData['draw']),   // for every request/draw by client side , they send a number as a parameter, when they receive a response/data they first check the draw number, so we are sending same number in draw.
+                "recordsTotal" => intval($totalData),  // total number of records
+                "recordsFiltered" => intval($totalFiltered), // total number of records after searching, if there is no searching then totalFiltered = totalData
+                "data" => $data   // total data array
+            );
+            file_put_contents($cacheFile, json_encode($data)); // cache it!
+            echo json_encode($json_data);  // send data as json format
+
+        }
         $this->db->close();
     }
 
@@ -354,9 +379,6 @@ if (!isset($_POST['action']) || empty($_POST['action'])) {
         case 'getTableData' :
             $class->connect();
             $class->getTableData();
-
             break;
     }
 }
-
-

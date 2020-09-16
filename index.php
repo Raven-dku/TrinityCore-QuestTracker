@@ -83,6 +83,8 @@ $func = new Functions();
             "responsive": true,
             "processing": true,
             "serverSide": true,
+            "dataType": "json",
+            "cache": true,
             "ajax": {url: "includes/functions.php", data: {action: 'getTableData'}, type: 'post'},
             "initComplete": function(settings, json) {
                 $('#searchField').keyup(function(){dataTable.search($(this).val()).draw() ;});

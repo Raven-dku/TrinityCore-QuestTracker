@@ -1,5 +1,6 @@
 
 includes/config.php
+cache/*.cache
 .idea/deployment.xml
 .idea/htdocs.iml
 .idea/misc.xml
