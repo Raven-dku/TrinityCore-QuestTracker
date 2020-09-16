@@ -28,6 +28,16 @@ You will also need to enable your Quest Tracker in your **worldserver.conf** fil
 ```
 Quests.EnableQuestTracker = 1
 ```
+Features:
+- Tooltips on almost every row with Last X Abandoned/Accepted/Completed quests (Number to display is customizable)
+- Retrieves character's names (If deleted, will display [DELETED])
+- Retrieves character's class, and converts it to color. Because it's awesome!
+- Quest Tooltips (Tooltip information and source can be switched, depending on your needs)
+- Dynamic live table loading
+- Light / Dark mode, with an instant switch. Incase you want to go to the dark side >.<
+- Sorting by any row, both descending and ascending order
+- Coded in OOP
+
 Tested on:
 - 3.3.5, works as intended.
 - master, waiting to be tested. (In theory it should work if such table exists in master, just need to select ARMORY type to 2(Wowhead)).
