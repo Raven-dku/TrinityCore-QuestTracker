@@ -30,6 +30,7 @@ Quests.EnableQuestTracker = 1
 ```
 Features:
 - Tooltips on almost every row with Last X Abandoned/Accepted/Completed quests (Number to display is customizable)
+- Caching is working. The more you use application, the faster it gets. // TODO: refresh cache/delete cache
 - Retrieves character's names (If deleted, will display [DELETED])
 - Retrieves character's class, and converts it to color. Because it's awesome!
 - Quest Tooltips (Tooltip information and source can be switched, depending on your needs)
